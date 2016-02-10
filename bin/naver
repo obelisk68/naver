@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'naver'
+
+Naver.getpic(ARGV[0], "/home/tomoki/Documents/")
