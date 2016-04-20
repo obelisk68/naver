@@ -1,6 +1,7 @@
 require "naver/version"
 require 'nokogiri' 
 require 'open-uri'
+#require 'utils'
 
 module Naver
   def self.getpic(num, dir=".")
@@ -41,6 +42,19 @@ module Naver
       end
     end
     
+    def time_lexic
+    t = Time.now
+    i = (t.to_i.to_s +  sprintf("%06d", t.usec)).to_i
+    ar = ("a".."z").to_a
+    st = ""
+    begin
+      st = ar[i % 26] + st
+      i /= 26
+    end while i > 0
+    st
+  end
+    
+    
     def getpage(url)
       check = true
       Nokogiri.HTML(open(url)).css('p.mdMTMWidget01ItemImg01View a').each do |node|
@@ -61,7 +75,7 @@ module Naver
     
     def dlpic(url)
       iurl = Nokogiri.HTML(open(url)).css('p.mdMTMEnd01Img01 a').attribute('href').value
-      fname = "pic#{@number}_#{@num}" + imgsuffix(iurl)
+      fname = time_lexic + imgsuffix(iurl)
       if save_file(iurl, fname)
 	print "Success:  "
 	@num += 1
